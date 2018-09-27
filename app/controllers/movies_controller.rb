@@ -27,6 +27,7 @@ class MoviesController < ApplicationController
 		end
 		@checked_ratings = (session[:ratings].keys if session.key?(:ratings)) || @all_ratings
     @movies = Movie.order(sort_by).where(rating: @checked_ratings)
+    #session.clear clears the history of checks and session sort
 end
   
 
