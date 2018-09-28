@@ -12,19 +12,29 @@ class MoviesController < ApplicationController
 
    def index
 		if params.key?(:sort_by)
+		    #allows the clickable links
 			session[:sort_by] = params[:sort_by]
 		elsif session.key?(:sort_by)
+			#allows to connect to server
 			params[:sort_by] = session[:sort_by]
 			redirect_to movies_path(params) and return
 		end
+		#allows the link to highlight in yellow once pressed
+		#and become sorted
 		@hilite = sort_by = session[:sort_by]
+		#calls the ratings funciton
 		@all_ratings = Movie.all_ratings
 		if params.key?(:ratings)
+		    #allows the check boxes to be clicked
+		    #and remain active upon refresh, so this
+		    #adds the sorting by rating
 			session[:ratings] = params[:ratings]
 		elsif session.key?(:ratings)
+			#works with redircting to server
 			params[:ratings] = session[:ratings]
 			redirect_to movies_path(params) and return
 		end
+		#allows checking of ratings and connects to the ratings function
 		@checked_ratings = (session[:ratings].keys if session.key?(:ratings)) || @all_ratings
     @movies = Movie.order(sort_by).where(rating: @checked_ratings)
     #session.clear clears the history of checks and session sort
